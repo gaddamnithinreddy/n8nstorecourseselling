@@ -159,13 +159,11 @@ export default function TemplateClient({ slug, initialTemplate }: TemplateClient
 
         if (window.Cashfree) {
             try {
-                const mode = "sandbox" // Or fetch from config if we store it in state. 
-                // Simplified: Sandbox for testing. In prod, we'd want to sync this.
-                // Ideally we fetch config, store env in state.
 
-                // For now, defaulting to sandbox is safer for testing.
+                const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE === "PROD" ? "production" : "sandbox"
+
                 const cashfree = new window.Cashfree({
-                    mode: "sandbox"
+                    mode: mode
                 })
                 setCashfree(cashfree)
 
