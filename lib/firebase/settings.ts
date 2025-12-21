@@ -1,5 +1,5 @@
 import { db } from "./config"
-import { doc, getDoc, setDoc, serverTimestamp, Timestamp } from "firebase/firestore"
+import { doc, getDoc, setDoc, serverTimestamp, Timestamp, collection, getDocs, query, where, deleteDoc, addDoc } from "firebase/firestore"
 import type { SiteSettings } from "./types"
 
 const SETTINGS_DOC_ID = "site-settings"
@@ -44,9 +44,6 @@ export async function updateSettings(
     }
 }
 
-/**
- * Initialize default settings if they don't exist
- */
 /**
  * Initialize default settings if they don't exist
  */
@@ -112,5 +109,55 @@ export async function initializeDefaultSettings(): Promise<void> {
 
     await setDoc(doc(db, "settings", SETTINGS_DOC_ID), defaultSettings)
 }
-// Removed unused whitelist functions as per new schema
 
+/**
+ * Check if an email is in the admin whitelist
+ */
+export async function isAdminWhitelisted(email: string): Promise<boolean> {
+    if (!email) return false
+
+    try {
+        const whitelistQuery = query(
+            collection(db, "adminWhitelist"),
+            where("email", "==", email.toLowerCase())
+        )
+        const snapshot = await getDocs(whitelistQuery)
+        return !snapshot.empty
+    } catch (error) {
+        console.error("Error checking whitelist:", error)
+        return false
+    }
+}
+
+/**
+ * Add an email to the admin whitelist
+ */
+export async function addAdminToWhitelist(email: string, addedBy: string): Promise<void> {
+    const normalizedEmail = email.toLowerCase()
+
+    // Check if already exists
+    const isWhitelisted = await isAdminWhitelisted(normalizedEmail)
+    if (isWhitelisted) return
+
+    await addDoc(collection(db, "adminWhitelist"), {
+        email: normalizedEmail,
+        addedBy,
+        addedAt: serverTimestamp(),
+    })
+}
+
+/**
+ * Remove an email from the admin whitelist
+ */
+export async function removeAdminFromWhitelist(email: string, removedBy: string): Promise<void> {
+    const normalizedEmail = email.toLowerCase()
+
+    const whitelistQuery = query(
+        collection(db, "adminWhitelist"),
+        where("email", "==", normalizedEmail)
+    )
+    const snapshot = await getDocs(whitelistQuery)
+
+    const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref))
+    await Promise.all(deletePromises)
+}
