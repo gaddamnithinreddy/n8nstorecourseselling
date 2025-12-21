@@ -1,6 +1,6 @@
 import { Cashfree, CFEnvironment } from "cashfree-pg";
 
-const environment = process.env.CASHFREE_ENV === "PROD"
+const environment = (process.env.CASHFREE_ENV === "PROD" || process.env.NEXT_PUBLIC_CASHFREE_MODE === "PROD")
     ? CFEnvironment.PRODUCTION
     : CFEnvironment.SANDBOX;
 
