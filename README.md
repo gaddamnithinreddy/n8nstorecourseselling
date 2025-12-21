@@ -96,6 +96,16 @@ The project follows a modular, feature-based architecture within the Next.js App
    ```
    Open [http://localhost:3000](http://localhost:3000) to view the app.
 
+## 🚀 Deployment Config
+
+### Firebase Auth Domain (Critical)
+After deploying, if you see `auth/unauthorized-domain` error during login:
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Navigate to **Authentication** > **Settings** > **Authorized Domains**
+3. Click "Add Domain"
+4. Add your deployed domain (e.g., `your-app.vercel.app`)
+
 ## 🔒 Security
 
 - **Authentication**: Secured via Firebase Auth with email verification gates.
