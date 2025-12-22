@@ -8,10 +8,10 @@ import { createCashfreeOrder } from "@/lib/cashfree-api" // Direct API utility
 export async function POST(req: Request) {
     // 1. Rate Limit Check
     const ip = req.headers.get("x-forwarded-for") || "127.0.0.1"
-    const { success } = await rateLimit.limit(ip)
+    const { success } = await rateLimit(ip)
 
     if (!success) {
-        return errorResponse("Too many requests", HTTP_STATUS.TOO_MANY_REQUESTS, "RATE_LIMIT_EXCEEDED")
+        return errorResponse("Too many requests", 429, "RATE_LIMIT_EXCEEDED")
     }
 
     try {
