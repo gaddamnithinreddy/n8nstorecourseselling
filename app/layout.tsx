@@ -92,7 +92,10 @@ export async function generateMetadata(): Promise<Metadata> {
         apple: "/apple-touch-icon.png",
       },
       manifest: "/site.webmanifest",
-      generator: 'v0.app'
+      generator: 'v0.app',
+      verification: {
+        google: "QZehZ3aJHOF4fyvHPISEJtzhTZpzxjLHwJe8GvzMepc",
+      },
     }
   } catch (error) {
     console.error("Error generating metadata:", error)
