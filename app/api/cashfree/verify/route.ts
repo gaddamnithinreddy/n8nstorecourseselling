@@ -3,7 +3,7 @@ import { successResponse, errorResponse, HTTP_STATUS } from "@/lib/api-response"
 import { getAdminDb, isFirebaseAdminReady, getInitError } from "@/lib/firebase/admin"
 import { sendPurchaseEmail } from "@/lib/email-service"
 import { incrementCouponUsageByCode, recordCouponPurchase } from "@/lib/firebase/coupons"
-import Cashfree from "@/lib/cashfree"
+import { verifyCashfreeOrder } from "@/lib/cashfree-api" // Direct API
 import crypto from "crypto"
 
 export async function POST(req: NextRequest) {
@@ -41,8 +41,6 @@ export async function POST(req: NextRequest) {
             return errorResponse("Missing orderId", HTTP_STATUS.BAD_REQUEST, "MISSING_ORDER_ID")
         }
 
-
-
         // Get order by Cashfree Order ID (since redirect passes that)
         const orderQuery = await adminDb.collection("orders")
             .where("cashfreeOrderId", "==", orderId)
@@ -68,11 +66,10 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        // Call Cashfree API to verify payment status
+        // Call Cashfree API to verify payment status (Direct API)
         try {
 
-            const response = await Cashfree.PGOrderFetchPayments(cashfreeOrderId)
-            const payments = response.data
+            const payments = await verifyCashfreeOrder(cashfreeOrderId)
 
             // Check for any successful payment
             const successfulPayment = payments?.find((p: any) => p.payment_status === "SUCCESS")
@@ -81,8 +78,6 @@ export async function POST(req: NextRequest) {
                 console.warn("[Cashfree] No successful payment found for:", cashfreeOrderId)
                 return errorResponse("Payment not successful", HTTP_STATUS.BAD_REQUEST, "PAYMENT_FAILED")
             }
-
-
 
             // Payment is SUCCESS. Fulfill order.
 
@@ -152,7 +147,6 @@ export async function POST(req: NextRequest) {
                     }
                 }
 
-
                 await sendPurchaseEmail(
                     {
                         userEmail: order.userEmail as string,
@@ -173,7 +167,7 @@ export async function POST(req: NextRequest) {
             })
 
         } catch (apiError: any) {
-            console.error("[Cashfree] API Error:", apiError.response?.data?.message || apiError)
+            console.error("[Cashfree] API Error:", apiError.message || apiError)
             return errorResponse("Failed to verify payment with gateway", HTTP_STATUS.INTERNAL_ERROR, "GATEWAY_ERROR")
         }
 

@@ -50,3 +50,33 @@ export const createCashfreeOrder = async (orderData: any) => {
         throw error
     }
 }
+
+export const verifyCashfreeOrder = async (orderId: string) => {
+    const { mode, appId, secretKey, baseUrl } = getCashfreeConfig()
+
+    const url = `${baseUrl}/orders/${orderId}/payments`
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "x-api-version": API_VERSION,
+            "x-client-id": appId,
+            "x-client-secret": secretKey
+        }
+    }
+
+    try {
+        const response = await fetch(url, options)
+        const data = await response.json()
+
+        if (!response.ok) {
+            console.error("[Cashfree API] Verify Response Error:", JSON.stringify(data))
+            throw new Error(data.message || "Cashfree API verification failed")
+        }
+
+        return data // Returns array of payments
+    } catch (error: any) {
+        console.error("[Cashfree API] Verify Network Error:", error)
+        throw error
+    }
+}

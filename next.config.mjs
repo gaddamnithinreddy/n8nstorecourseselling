@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-// Build: 2025-12-22 10:03 IST - Cashfree SDK fix
+// Build: 2025-12-22 10:48 IST - Verify logic fix
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
