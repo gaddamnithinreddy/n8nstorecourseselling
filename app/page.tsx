@@ -1,6 +1,5 @@
 "use client"
 import * as React from "react"
-import Script from "next/script"
 import Autoplay from "embla-carousel-autoplay"
 import {
     Carousel,
@@ -127,26 +126,8 @@ export default function HomePage() {
         },
     ]
 
-
-
-    const faqSchema = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqs.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": faq.answer
-            }
-        }))
-    }
-
     return (
         <div className="flex min-h-screen flex-col">
-            <Script id="faq-schema" type="application/ld+json">
-                {JSON.stringify(faqSchema)}
-            </Script>
             <Navbar />
 
             <main className="flex-1">
@@ -181,7 +162,7 @@ export default function HomePage() {
                                         <span className="text-primary">{settings.heroTitle.split(" ").slice(-2).join(" ")}</span>
                                     </>
                                 ) : (
-                                    <>Premium n8n Workflow Templates for <span className="text-primary">Real-World Automation</span></>
+                                    <>Automate Your Workflow with <span className="text-primary">Premium Scale & AI Agents</span></>
                                 )}
                             </motion.h1>
                             <motion.p variants={itemVariants} className="mb-8 text-base text-muted-foreground sm:text-lg md:text-xl text-pretty leading-relaxed">
