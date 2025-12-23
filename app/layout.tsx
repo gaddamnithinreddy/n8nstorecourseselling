@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 import { getAdminDb } from "@/lib/firebase/admin"
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://n8npremiumtemplates.vercel.app"
 
 export async function generateMetadata(): Promise<Metadata> {
   try {

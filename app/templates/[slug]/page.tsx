@@ -51,7 +51,7 @@ export async function generateMetadata(
 export default async function Page({ params }: Props) {
   const { slug } = await params
   const template = await getTemplateBySlug(slug)
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://n8npremiumtemplates.vercel.app"
 
   const jsonLd = template ? [
     {

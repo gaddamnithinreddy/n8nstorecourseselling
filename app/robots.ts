@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/admin/', '/dashboard/'],
         },
-        sitemap: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/sitemap.xml`,
+        sitemap: `${process.env.NEXT_PUBLIC_APP_URL || "https://n8npremiumtemplates.vercel.app"}/sitemap.xml`,
     }
 }
