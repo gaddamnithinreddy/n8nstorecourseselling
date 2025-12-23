@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getAllTemplates } from '@/lib/firebase/server-templates'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://n8npremiumtemplates.vercel.app'
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://n8npremiumtemplates.vercel.app').replace(/\/$/, '')
 
     // Static routes
     const routes = [

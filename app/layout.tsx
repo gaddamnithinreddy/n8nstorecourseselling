@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 import { getAdminDb } from "@/lib/firebase/admin"
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://n8npremiumtemplates.vercel.app"
+const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "https://n8npremiumtemplates.vercel.app").replace(/\/$/, '')
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -56,6 +56,8 @@ export async function generateMetadata(): Promise<Metadata> {
         "n8n templates",
         "n8n premium templates",
         "n8n free templates",
+        "n8n premium share",
+        "n8n free share",
         "automation workflows",
         "download ready n8n templates",
         "n8n ai agents",
