@@ -162,11 +162,11 @@ export default function HomePage() {
                                         <span className="text-primary">{settings.heroTitle.split(" ").slice(-2).join(" ")}</span>
                                     </>
                                 ) : (
-                                    <>Automate Your Workflow with <span className="text-primary">Premium Scale & AI Agents</span></>
+                                    <>Automate Your Workflow with <span className="text-primary">Premium n8n Templates</span></>
                                 )}
                             </motion.h1>
                             <motion.p variants={itemVariants} className="mb-8 text-base text-muted-foreground sm:text-lg md:text-xl text-pretty leading-relaxed">
-                                {settings?.heroDescription || "Download production-ready n8n workflows and AI agents. Automate CRM, Sales, and Marketing with verified templates to save hours of development time."}
+                                {settings?.heroDescription || "Skip the complexity. Get production-ready n8n workflows that save you hours of development time. Import, customize, and deploy in minutes."}
                             </motion.p>
                             <motion.div variants={itemVariants} className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
                                 <Button size="lg" className="w-full sm:w-auto" asChild>
