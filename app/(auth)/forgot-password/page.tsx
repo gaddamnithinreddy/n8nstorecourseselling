@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState("")
-    const { checkEmailProvider } = useAuth()
+    // const { checkEmailProvider } = useAuth() // Unused now
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -35,20 +35,7 @@ export default function ForgotPasswordPage() {
         }
 
         try {
-            // Check if account exists and which provider it uses
-            const providerCheck = await checkEmailProvider(emailValidation.data!)
-
-            if (!providerCheck.exists) {
-                setError("No account found with this email address. Would you like to sign up instead?")
-                setLoading(false)
-                return
-            }
-
-            if (providerCheck.provider === 'google.com') {
-                setError("This account uses Google Sign-In and doesn't have a password. Please sign in with Google instead.")
-                setLoading(false)
-                return
-            }
+            // Direct send without pre-check (fixes Email Enumeration Protection issue)
 
             // Send password reset email
             await sendPasswordResetEmail(auth, emailValidation.data!)
